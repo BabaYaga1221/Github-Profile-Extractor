@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Github Profile Extractor</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="javascript" href="github.js">
+</head>
+
+<body>
+    <div class="container">
+        <div class="logo">
+            <img src="github-icon-4.jpg" alt="logo">
+            <h1>Github Profile Extractor</h1>
+        </div>
+        <form id="form" type="submit">
+            <div class="form-type">
+                <label for="username">Enter Username : </label>
+                <br>
+                <input type="text" id="name">
+                <!-- <br>
+                <input type="submit" id="btn" onclick(git)> -->
+            </div>
+        </form>
+        <div id="profile">
+
+        </div>
+    </div>
+
+    <script>
+        function git(e) {
+            e.preventDefault();
+            var val = document.getElementById('name').value;
+            var a = document.getElementById('profile');
+            if(!val || val=='')
+            {
+                a.innerHTML = `<h3> Please enter the username </h3>`;
+            }
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (xhttp.readyState == 4 && xhttp.status == 200) {
+                    var user = JSON.parse(xhttp.responseText);
+                    a.innerHTML = `<div id="Image">
+                        <img src="${user.avatar_url} alt="avatar">
+                        </div>
+                        <div id="Info">
+                            <p><span id="repo">Public repos : ${user.public_repos}</span> <span id="Gits">Public Gits : ${user.public_gits}<span></p>
+                            <span id='u'>Username</span>
+                            <h4>${user.name}</h4>
+                            <span id='u'>Email</span>
+                            <h4>${user.email}</h4>
+                            <a href="${user.html_url}">Github Profile</a>
+                        </div>`
+                }
+            }
+            xhttp.open('GET', 'https://api.github.com/users/' + val, true);
+            xhttp.send();
+        }
+        document.getElementById('form').addEventListener('submit',git,false);
+        // git();
+    </script>
+</body>
+
+</html>
